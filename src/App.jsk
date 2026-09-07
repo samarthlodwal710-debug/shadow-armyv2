@@ -1,0 +1,94 @@
+import React, { useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import {
+  AdminPanel,
+  Announcements,
+  Dashboard,
+  Login,
+  Members,
+  Profile,
+  Register,
+  Rules,
+} from "./pages.jsx";
+
+import { Sidebar } from "./components.jsx";
+
+function ProtectedLayout() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <>
+      <Sidebar
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
+
+      <Routes>
+        <Route
+          path="/"
+          element={<DashboardWithMenu onMenu={() => setMenuOpen(true)} />}
+        />
+        <Route
+          path="/members"
+          element={<MembersWithMenu onMenu={() => setMenuOpen(true)} />}
+        />
+        <Route
+          path="/profile"
+          element={<ProfileWithMenu onMenu={() => setMenuOpen(true)} />}
+        />
+        <Route
+          path="/rules"
+          element={<RulesWithMenu onMenu={() => setMenuOpen(true)} />}
+        />
+        <Route
+          path="/announcements"
+          element={
+            <AnnouncementsWithMenu onMenu={() => setMenuOpen(true)} />
+          }
+        />
+        <Route
+          path="/admin"
+          element={<AdminPanelWithMenu onMenu={() => setMenuOpen(true)} />}
+        />
+      </Routes>
+    </>
+  );
+}
+
+function DashboardWithMenu({ onMenu }) {
+  return <Dashboard onMenu={onMenu} />;
+}
+
+function MembersWithMenu({ onMenu }) {
+  return <Members onMenu={onMenu} />;
+}
+
+function ProfileWithMenu({ onMenu }) {
+  return <Profile onMenu={onMenu} />;
+}
+
+function RulesWithMenu({ onMenu }) {
+  return <Rules onMenu={onMenu} />;
+}
+
+function AnnouncementsWithMenu({ onMenu }) {
+  return <Announcements onMenu={onMenu} />;
+}
+
+function AdminPanelWithMenu({ onMenu }) {
+  return <AdminPanel onMenu={onMenu} />;
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      <Route path="/*" element={<ProtectedLayout />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+                                                              }
